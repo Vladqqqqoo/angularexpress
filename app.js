@@ -5,14 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 
-
 const passport = require('passport');
-// require('./modules/passport');
-
+require('./modules/passport');
 
 const app = express();
 
@@ -30,7 +26,6 @@ app.all('*', function (req, res, next) {
 });
 
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
 

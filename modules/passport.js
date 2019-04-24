@@ -2,7 +2,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
-const CustomerModel = require('../models/customer');
+const UserModel = require('../models/user');
 
 passport.use(new LocalStrategy({
         usernameField: 'login',
@@ -11,10 +11,10 @@ passport.use(new LocalStrategy({
     },
     function (login, password, done) {
         console.log('HELLO');
-        return CustomerModel.findOne({login, password})
+        return UserModel.findOne({login, password})
             .then(user => {
                 if (!user) {
-                    return done(null, false, {message: 'Incorrect login'});
+                    return done(null, false, {message: 'User not found'});
                 }
                 return done(null, user, {message: 'Logged In Successfully'})
             })
