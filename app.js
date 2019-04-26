@@ -5,7 +5,8 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
 
-const usersRouter = require('./routes/users');
+const authRouter = require('./routes/authRouter');
+const userAccountRouter = require('./routes/userAccountRouter')
 
 const passport = require('passport');
 require('./modules/passport');
@@ -26,7 +27,9 @@ app.all('*', function (req, res, next) {
 });
 
 
-app.use('/users', usersRouter);
+app.use('/users', authRouter );
+app.use('/account', userAccountRouter );
+
 
 
 // catch 404 and forward to error handler

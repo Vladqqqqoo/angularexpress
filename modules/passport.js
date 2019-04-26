@@ -25,11 +25,13 @@ passport.use(new LocalStrategy({
 
 const passportOpt = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    passReqToCallback: true,
     secretOrKey: 'access',
 };
 
-passport.use(new JwtStrategy(passportOpt, function (jwtPayload, done) {
-    return done(null, jwtPayload);
+passport.use(new JwtStrategy(passportOpt, function (request, jwtPayload, done) {
+    request.params._id = jwtPayload._id;
+    return done(null, request, jwtPayload);
 }));
 
 module.exports = passport;

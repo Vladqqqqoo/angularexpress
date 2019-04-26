@@ -3,11 +3,11 @@ const jwt = require('jsonwebtoken');
 const UserModel = require('../models/user');
 const validation = require('../modules/validation');
 
-class UsersService {
+class AuthService {
 
     static generateTokens(data) {
-        const jwtToken = jwt.sign({_id: data._id}, 'access', {expiresIn: 15});
-        const refreshToken = jwt.sign({_id: data.id}, 'refresh', {expiresIn: "1h"});
+        const jwtToken = jwt.sign({_id: data._id}, 'access', {expiresIn: 5});
+        const refreshToken = jwt.sign({_id: data._id}, 'refresh', {expiresIn: "1h"});
         return {jwt: jwtToken, refreshToken: refreshToken};
     }
 
@@ -21,11 +21,11 @@ class UsersService {
                     user: user
                 });
             }
-            res.json(UsersService.generateTokens(user));
+            res.json(AuthService.generateTokens(user));
         })
         (req, res);
     }
-
+ 
     logOut(req, res, next) {
         jwt.verify(req.body.refreshToken, 'refresh', function (err, data) {
             if (err) {
@@ -55,11 +55,11 @@ class UsersService {
                 res.status(403).send('Refresh token is expired');
             } else {
                 console.log(data._id);
-                res.json(UsersService.generateTokens(data));
+                res.json(AuthService.generateTokens(data));
             }
         });
     }
 }
 
-let service = new UsersService();
-module.exports = service;
+let authService = new AuthService();
+module.exports = authService;
