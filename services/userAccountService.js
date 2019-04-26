@@ -4,13 +4,12 @@ const passport = require('passport')
 class UserAccountService {
     getUserInfo(req, res, next){
         console.log(req.params._id + ' tuta');
-        // passport.authenticate('jwt', {session: false}, (err, payload) => {
-        //     UserModel.findOne({_id: payload}).then(data=>{
-                res.json('asdf');
-        //     });
-        // })
-        // (req, res);
+            UserModel.findOne({_id: req.params._id}).then(data=>{
+                console.log(data)
+                res.json(data);
+            });
     }
+
 
     updateUserInfo(req, res, next){
         console.log(req.body.login);
