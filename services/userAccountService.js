@@ -13,6 +13,10 @@ class UserAccountService {
         );
     }
 
+    updateUserPassword(req, res, next){
+        console.log(1)
+    }
+
 }
 
 let userAccountService = new UserAccountService();
