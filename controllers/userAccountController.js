@@ -8,6 +8,12 @@ class UserAccountController {
     updateUserInfo(req, res, next){
         userAccountService.updateUserInfo(req, res, next)
     }
+
+    updateUserPassword(req, res, next){
+        userAccountService.updateUserPassword(req, res, next)
+    }
+
+
 }
 
 let UserPageController = new UserAccountController();
