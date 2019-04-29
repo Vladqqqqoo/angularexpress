@@ -14,7 +14,19 @@ class UserAccountService {
     }
 
     updateUserPassword(req, res, next){
-        console.log(1)
+        UserModel.findOneAndUpdate({_id: req.params._id, password: req.body.oldPassword}, {password: req.body.newPassword}).then(
+            data => {
+                if(data === null){
+                    res.sendStatus(400);
+                }
+                else {
+                    res.sendStatus(200);
+                }
+            }
+        ).catch(err => {
+            console.log(err);
+            res.status(500).send(err)
+        });
     }
 
 }
