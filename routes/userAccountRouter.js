@@ -5,7 +5,7 @@ const passport = require('passport');
 
 router.use(passport.authenticate('jwt', {session: false}));
 
-router.get('/info', passport.authenticate('jwt', {session: false}), userAccountController.getUserInfo);
+router.get('/info', userAccountController.getUserInfo);
 router.post('/info', userAccountController.updateUserInfo);
 
 router.post('/password', passport.authenticate('jwt', {session: false}),userAccountController.updateUserPassword);

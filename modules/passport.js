@@ -30,8 +30,8 @@ const passportOpt = {
 };
 
 passport.use(new JwtStrategy(passportOpt, function (request, jwtPayload, done) {
-    request.params._id = jwtPayload._id;
-    return done(null, request, jwtPayload);
+    request._id = jwtPayload._id;
+    return done(null, jwtPayload);
 }));
 
 module.exports = passport;
