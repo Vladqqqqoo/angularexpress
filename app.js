@@ -6,30 +6,28 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const authRouter = require('./routes/authRouter');
-const userAccountRouter = require('./routes/userAccountRouter')
+const userAccountRouter = require('./routes/userAccountRouter');
 
 const passport = require('passport');
 require('./modules/passport');
 
 const app = express();
 
+const corsOptions = {
+    origin: 'http://localhost:4200',
+    credentials: true,
+};
+
 app.use(passport.initialize());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.all('*', function (req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    next();
-});
 
-
-app.use('/users', authRouter );
-app.use('/account', userAccountRouter );
-
+app.use('/users', authRouter);
+app.use('/account', userAccountRouter);
 
 
 // catch 404 and forward to error handler
@@ -45,7 +43,7 @@ app.use(function (err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error');
+    res.send(err);
 });
 
 module.exports = app;

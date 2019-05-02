@@ -7,7 +7,7 @@ router.use(passport.authenticate('jwt', {session: false}));
 
 router.get('/info', userAccountController.getUserInfo);
 router.post('/info', userAccountController.updateUserInfo);
-
-router.post('/password', passport.authenticate('jwt', {session: false}),userAccountController.updateUserPassword);
+router.post('/password', userAccountController.updateUserPassword);
+router.post('/avatar', userAccountController.updateUserAvatar);
 
 module.exports = router;

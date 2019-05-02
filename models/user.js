@@ -12,7 +12,8 @@ const UserSchema = new Schema({
     location: {type: String, require: false},
     website: {type: String, require: false},
     skills: {type: String, require: false},
-    bio: {type: String, require: false}
+    bio: {type: String, require: false},
+    avatar: {type: String, require: false},
 }, {versionKey: false});
 
 UserSchema.set('toJSON', {
