@@ -2,24 +2,20 @@ const mongoose = require('mongoose');
 
 const {Schema} = mongoose;
 
-const UserSchema = new Schema({
+const userSchema = new Schema({
     login: {type: String, require: true, unique: true},
     email: {type: String, require: true, unique: true},
     password: {type: String, require: true},
-    firstName: {type: String, require: false},
-    lastName: {type: String, require: false},
-    age: {type: Number, require: false},
-    location: {type: String, require: false},
-    website: {type: String, require: false},
-    skills: {type: String, require: false},
-    bio: {type: String, require: false},
-    avatar: {type: String, require: false},
+    firstName: {type: String},
+    lastName: {type: String},
+    age: {type: Number},
+    location: {type: String},
+    website: {type: String},
+    skills: {type: String},
+    bio: {type: String},
+    avatar: {type: String},
 }, {versionKey: false});
 
-UserSchema.set('toJSON', {
-    versionKey: false,
-});
+const userModel = mongoose.model('user', userSchema);
 
-const UserModel = mongoose.model('user', UserSchema);
-
-module.exports = UserModel;
+module.exports = userModel;
