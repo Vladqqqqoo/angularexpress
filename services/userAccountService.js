@@ -51,10 +51,15 @@ class UserAccountService {
                 if (user.avatar) {
                     const filePath = `${path.join(__dirname, '../public')}/${user.avatar}`;
                     fs.unlinkSync(filePath);
-                    console.log('tut');
+                    console.log(`DELETE OLD AVATAR - ${user.avatar}`);
+                } else {
+                    console.log('NO AVATAR');
                 }
+                UserModel.updateOne({_id: req._id}, {avatar: `avatars/${req.file.filename}`}).then(data => {
+                    console.log(`UPDATE IMAGE - ${data}`);
+                    res.send(`avatars/${req.file.filename}`);
+                });
             });
-            UserModel.updateOne({_id: req._id}, {avatar: `avatars/${req.file.filename}`}).then(data => res.send(`avatars/${req.file.filename}`));
         });
     }
 }
