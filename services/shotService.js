@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
     }
 });
 
-var upload = multer({storage: storage}).single('file');
+const upload = multer({storage: storage}).single('file');
 
 
 class ShotService {
@@ -27,7 +27,7 @@ class ShotService {
                 .then(shot => {
                         userModel.updateOne({_id: req._id}, {
                             $push: {
-                                shots: shot.__id
+                                shots: shot._id
                             }
                         })
                             .then(
@@ -58,6 +58,14 @@ class ShotService {
 
     getUserList(req, res, next) {
         shotModel.find({idUser: req._id}).then(
+            data => {
+                res.send(data)
+            }
+        );
+    }
+
+    getList(req, res, next) {
+        shotModel.find({}).then(
             data => {
                 res.send(data)
             }

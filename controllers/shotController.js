@@ -16,6 +16,9 @@ class ShotController {
     getUserList(req, res, next){
         shotService.getUserList(req, res, next);
     }
+    getList(req, res, next){
+        shotService.getList(req, res, next);
+    }
 
 }
 
