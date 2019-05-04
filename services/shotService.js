@@ -1,4 +1,4 @@
-const UserModel = require('../models/user');
+const userModel = require('../models/user');
 const shotModel = require('../models/shot');
 const multer = require('multer');
 const path = require('path');
@@ -19,19 +19,21 @@ var upload = multer({storage: storage}).single('file');
 
 class ShotService {
     uploadOneShot(req, res, next) {
-        res.sendStatus(401);
+        shotModel.find().then((data)=>{
+            res.send(data);
+        });
     }
 
     getShot(req, res, next) {
-        res.sendStatus(401);
+        res.sendStatus(404);
 
     }
     updateShot(req, res, next) {
-        res.sendStatus(401);
+        res.sendStatus(404);
     }
 
     getList(req, res, next) {
-        res.sendStatus(401);
+        res.sendStatus(404);
     }
 }
 
