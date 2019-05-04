@@ -20,6 +20,6 @@ class UserAccountController {
 
 }
 
-let UserPageController = new UserAccountController();
-module.exports = UserPageController;
+let userAccountController = new UserAccountController();
+module.exports = userAccountController;
 
