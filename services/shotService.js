@@ -19,21 +19,49 @@ var upload = multer({storage: storage}).single('file');
 
 class ShotService {
     uploadOneShot(req, res, next) {
-        shotModel.find().then((data)=>{
-            res.send(data);
+        upload(req, res, function (err) {
+            if (err) {
+                return res.send(err.toString());
+            }
+            shotModel.create({shotUrl: `shots/${req.file.filename}`, idUser: req._id})
+                .then(shot => {
+                        userModel.updateOne({_id: req._id}, {
+                            $push: {
+                                shots: shot.__id
+                            }
+                        })
+                            .then(
+                                user => {
+                                    res.send(shot);
+                                }
+                            )
+                    }
+                )
         });
-    }
+    };
 
     getShot(req, res, next) {
-        res.sendStatus(404);
-
+        shotModel.findOne({_id: req.params.id})
+            .then(shot =>{
+                res.send(shot);
+            })
     }
+
     updateShot(req, res, next) {
-        res.sendStatus(404);
+        shotModel.updateOne({_id: req.params.id} , req.body )
+            .then(
+                data =>{
+                    res.send(data);
+                }
+            )
     }
 
-    getList(req, res, next) {
-        res.sendStatus(404);
+    getUserList(req, res, next) {
+        shotModel.find({idUser: req._id}).then(
+            data => {
+                res.send(data)
+            }
+        );
     }
 }
 
