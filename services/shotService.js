@@ -82,17 +82,17 @@ class ShotService {
 
     likeShot(req, res, next) {
         shotModel.findOne({_id: req.body.shotId})
-            .then(shot =>{
+            .then(shot => {
                 const userIndex = shot.likedBy.findIndex(userId => userId === req._id);
-                if(userIndex){
+                if (userIndex !== -1) {
                     console.log(`like exist`);
-                    shot.likes --;
-                    shot.likedBy.splice(userIndex,1);
+                    shot.likes--;
+                    shot.likedBy.splice(userIndex, 1);
                     shotModel.updateOne({_id: shot._id}, shot)
-                        .then(newShot => {
+                        .then(updateQuery => {
                             res.send({
-                                likes: newShot.likes,
-                                likedBy: newShot.likedBy,
+                                likes: shot.likes,
+                                likedBy: shot.likedBy,
                                 isLiked: false
                             })
                         })
@@ -101,15 +101,15 @@ class ShotService {
                     shot.likes++;
                     shot.likedBy.push(req._id);
                     shotModel.updateOne({_id: shot._id}, shot)
-                        .then(newShot => {
+                        .then(updateQuery => {
                             res.send({
-                                likes: newShot.likes,
-                                likedBy: newShot.likedBy,
+                                likes: shot.likes,
+                                likedBy: shot.likedBy,
                                 isLiked: true
                             })
                         })
                 }
-        })
+            })
     }
 }
 
