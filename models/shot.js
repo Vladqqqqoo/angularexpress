@@ -7,7 +7,9 @@ const shotSchema = new Schema({
     idUser: {type: Schema.Types.ObjectId, require: true},
     title: {type: String},
     tags: {type: String},
-    description: {type: String}
+    description: {type: String},
+    likes: {type: Number, default: 0},
+    likedBy: {type: Array},
 }, {versionKey: false});
 
 const shotModel = mongoose.model('shot', shotSchema);

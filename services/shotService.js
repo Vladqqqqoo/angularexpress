@@ -79,6 +79,13 @@ class ShotService {
             }
         );
     }
+
+    likeShot(req, res, next) {
+        shotModel.findOne({_id: req.body._id})
+            .then(shot =>{
+
+        })
+    }
 }
 
 let shotService = new ShotService();
