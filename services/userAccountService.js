@@ -19,7 +19,7 @@ var upload = multer({storage: storage}).single('file');
 class UserAccountService {
     getUserInfo(req, res, next) {
         UserModel.findOne({_id: req._id}).then(data => {
-            res.json(data);
+            res.send(data);
         });
     }
 
