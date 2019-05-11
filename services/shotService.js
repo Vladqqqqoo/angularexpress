@@ -81,9 +81,34 @@ class ShotService {
     }
 
     likeShot(req, res, next) {
-        shotModel.findOne({_id: req.body._id})
+        shotModel.findOne({_id: req.body.shotId})
             .then(shot =>{
-
+                const userIndex = shot.likedBy.findIndex(userId => userId === req._id);
+                if(userIndex){
+                    console.log(`like exist`);
+                    shot.likes --;
+                    shot.likedBy.splice(userIndex,1);
+                    shotModel.updateOne({_id: shot._id}, shot)
+                        .then(newShot => {
+                            res.send({
+                                likes: newShot.likes,
+                                likedBy: newShot.likedBy,
+                                isLiked: false
+                            })
+                        })
+                } else {
+                    console.log('like does not exist');
+                    shot.likes++;
+                    shot.likedBy.push(req._id);
+                    shotModel.updateOne({_id: shot._id}, shot)
+                        .then(newShot => {
+                            res.send({
+                                likes: newShot.likes,
+                                likedBy: newShot.likedBy,
+                                isLiked: true
+                            })
+                        })
+                }
         })
     }
 }
