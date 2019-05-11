@@ -3,6 +3,7 @@ const shotModel = require('../models/shot');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const mongoose = require('mongoose');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -41,16 +42,23 @@ class ShotService {
     };
 
     getShot(req, res, next) {
-        shotModel.findOne({_id: req.params.id})
-            .then(shot =>{
-                res.send(shot);
-            })
+        const obj = {};
+        shotModel.findOne({_id: req.params.id}).then(data => {
+            obj.currentShot = data;
+            shotModel.find({_id: {$gt: req.params.id}}).sort({_id: 1}).limit(1).then(data => {
+                obj['nextShot'] = data[0];
+                shotModel.find({_id: {$lt: req.params.id}}).sort({_id: -1}).limit(1).then(data => {
+                    obj.prevShot = data[0];
+                    res.send(obj);
+                });
+            });
+        });
     }
 
     updateShot(req, res, next) {
-        shotModel.updateOne({_id: req.params.id} , req.body )
+        shotModel.updateOne({_id: req.params.id}, req.body)
             .then(
-                data =>{
+                data => {
                     res.send(data);
                 }
             )
