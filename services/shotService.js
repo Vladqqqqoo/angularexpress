@@ -2,6 +2,7 @@ const userModel = require('../models/user');
 const shotModel = require('../models/shot');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
 
 const storage = multer.diskStorage({
@@ -112,10 +113,17 @@ class ShotService {
     }
 
     deleteShot(req, res, next){
-        shotModel.deleteOne({_id: req.params.id})
+        shotModel.findOne({_id: req.params.id})
             .then(
-                data=>{
-                    res.send(data)
+                shot =>{
+                    const filePath = `${path.join(__dirname, '../public')}/${shot.shotUrl}`;
+                    fs.unlinkSync(filePath);
+                    console.log(`DELETE SHOT - ${shot.shotUrl}`);
+                    shotModel.deleteOne({_id: req.params.id})
+                        .then( data => {
+                            res.send(data)
+                            }
+                        )
                 }
             )
     }
