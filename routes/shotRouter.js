@@ -14,5 +14,6 @@ router.put('/like', passport.authenticate('jwt', {session: false}),shotControlle
 
 router.get('/:id', shotController.getShot);
 router.put('/:id',passport.authenticate('jwt', {session: false}), shotController.updateShot);
+router.delete('/:id',passport.authenticate('jwt', {session: false}), shotController.deleteShot);
 
 module.exports = router;

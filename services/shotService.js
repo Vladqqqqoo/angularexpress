@@ -2,8 +2,7 @@ const userModel = require('../models/user');
 const shotModel = require('../models/shot');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const mongoose = require('mongoose');
+
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -110,6 +109,15 @@ class ShotService {
                         })
                 }
             })
+    }
+
+    deleteShot(req, res, next){
+        shotModel.deleteOne({_id: req.params.id})
+            .then(
+                data=>{
+                    res.send(data)
+                }
+            )
     }
 }
 

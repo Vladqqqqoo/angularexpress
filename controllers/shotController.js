@@ -24,6 +24,9 @@ class ShotController {
     likeShot(req, res, next) {
         shotService.likeShot(req, res, next);
     }
+    deleteShot(req, res, next){
+        shotService.deleteShot(req, res, next)
+    }
 
 }
 
