@@ -26,18 +26,8 @@ class ShotService {
             }
             shotModel.create({shotUrl: `shots/${req.file.filename}`, idUser: req._id})
                 .then(shot => {
-                        userModel.updateOne({_id: req._id}, {
-                            $push: {
-                                shots: shot._id
-                            }
-                        })
-                            .then(
-                                user => {
-                                    res.send(shot);
-                                }
-                            )
-                    }
-                )
+                    res.send(shot);
+                })
         });
     };
 
@@ -72,12 +62,25 @@ class ShotService {
         );
     }
 
-    getList(req, res, next) {
-        shotModel.find({}).then(
-            data => {
-                res.send(data)
-            }
-        );
+    async getList(req, res, next) {
+        const data = await shotModel.aggregate([
+            {
+                $lookup: {
+                    localField: 'idUser',
+                    from: 'users',
+                    foreignField: '_id',
+                    as: 'username'
+                }
+            },
+            {
+                $unwind: {
+                    'path': '$username',
+                    'preserveNullAndEmptyArrays': true
+                }
+            },
+        ]);
+        res.send(data);
+
     }
 
     likeShot(req, res, next) {

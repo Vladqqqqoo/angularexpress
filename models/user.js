@@ -14,7 +14,6 @@ const userSchema = new Schema({
     skills: {type: String},
     bio: {type: String},
     avatar: {type: String},
-    shots: {type: Array}
 }, {versionKey: false});
 
 const userModel = mongoose.model('user', userSchema);
