@@ -11,6 +11,7 @@ router.get('/user/list', passport.authenticate('jwt', {session: false}), shotCon
 router.get('/list', shotController.getList);
 router.post('/', passport.authenticate('jwt', {session: false}), shotController.uploadOneShot);
 router.put('/like', passport.authenticate('jwt', {session: false}),shotController.likeShot);
+router.post('/comment', passport.authenticate('jwt', {session: false}),shotController.commentShot);
 
 router.get('/:id', shotController.getShot);
 router.put('/:id',passport.authenticate('jwt', {session: false}), shotController.updateShot);

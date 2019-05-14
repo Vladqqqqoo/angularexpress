@@ -112,6 +112,10 @@ class ShotService {
             })
     }
 
+    commentShot(req, res, next){
+
+    }
+
     deleteShot(req, res, next){
         shotModel.findOne({_id: req.params.id})
             .then(
