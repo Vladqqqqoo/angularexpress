@@ -1,4 +1,3 @@
-const userModel = require('../models/user');
 const shotModel = require('../models/shot');
 const multer = require('multer');
 const path = require('path');
@@ -113,10 +112,6 @@ class ShotService {
                         })
                 }
             })
-    }
-
-    commentShot(req, res, next){
-
     }
 
     deleteShot(req, res, next){

@@ -8,6 +8,7 @@ const cors = require('cors');
 const authRouter = require('./routes/authRouter');
 const userAccountRouter = require('./routes/userAccountRouter');
 const shotRouter = require('./routes/shotRouter');
+const commentRouter = require('./routes/commentRouter');
 
 const passport = require('passport');
 require('./modules/passport');
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', authRouter);
 app.use('/account', userAccountRouter);
 app.use('/shot', shotRouter);
+app.use('/comment', commentRouter);
 
 
 // catch 404 and forward to error handler

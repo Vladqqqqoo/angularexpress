@@ -25,10 +25,6 @@ class ShotController {
         shotService.likeShot(req, res, next);
     }
 
-    commentShot(req,res,next){
-        shotService.commentShot(req, res, next)
-    }
-
     deleteShot(req, res, next){
         shotService.deleteShot(req, res, next)
     }
