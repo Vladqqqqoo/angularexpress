@@ -1,5 +1,5 @@
-const userModel = require('../models/user');
 const shotModel = require('../models/shot');
+const commentModel = require('../models/comment');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
@@ -115,10 +115,6 @@ class ShotService {
             })
     }
 
-    commentShot(req, res, next){
-
-    }
-
     deleteShot(req, res, next){
         shotModel.findOne({_id: req.params.id})
             .then(
@@ -128,7 +124,10 @@ class ShotService {
                     console.log(`DELETE SHOT - ${shot.shotUrl}`);
                     shotModel.deleteOne({_id: req.params.id})
                         .then( data => {
-                            res.send(data)
+                            commentModel.remove({shotId: req.params.id})
+                                .then(
+                                    smth => res.send(data)
+                                )
                             }
                         )
                 }
