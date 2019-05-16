@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     }
 });
 
-var upload = multer({storage: storage}).single('file');
+const upload = multer({storage: storage}).single('file');
 
 
 class UserAccountService {

@@ -8,6 +8,9 @@ class CommentService {
                     res.send(comment)
                 }
             )
+            .catch(
+                err => console.log(err)
+            )
     }
 
     getAllComments(req, res, next){
@@ -16,6 +19,9 @@ class CommentService {
                 allComments => {
                     res.send(allComments);
                     }
+            )
+            .catch(
+                err => console.log(err)
             )
     }
 }
