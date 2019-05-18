@@ -33,16 +33,29 @@ class ShotService {
 
     getShot(req, res, next) {
         const obj = {};
-        shotModel.findOne({_id: req.params.id}).then(data => {
-            obj.currentShot = data;
-            shotModel.find({_id: {$gt: req.params.id}}).sort({_id: 1}).limit(1).then(data => {
-                obj['nextShot'] = data[0];
-                shotModel.find({_id: {$lt: req.params.id}}).sort({_id: -1}).limit(1).then(data => {
-                    obj.prevShot = data[0];
-                    res.send(obj);
+        if(req.query.userId!=='false'&&req.query.userId!=='undefined'){
+            shotModel.findOne({_id: req.query.shotId, idUser: req.query.userId}).then(data => {
+                obj.currentShot = data;
+                shotModel.find({_id: {$gt: req.query.shotId}, idUser: req.query.userId}).sort({_id: 1}).limit(1).then(data => {
+                    obj['nextShot'] = data[0];
+                    shotModel.find({_id: {$lt: req.query.shotId},idUser: req.query.userId}).sort({_id: -1}).limit(1).then(data => {
+                        obj['prevShot'] = data[0];
+                        res.send(obj);
+                    });
                 });
             });
-        });
+        } else {
+            shotModel.findOne({_id: req.query.shotId}).then(data => {
+                obj.currentShot = data;
+                shotModel.find({_id: {$gt: req.query.shotId}}).sort({_id: 1}).limit(1).then(data => {
+                    obj['nextShot'] = data[0];
+                    shotModel.find({_id: {$lt: req.query.shotId}}).sort({_id: -1}).limit(1).then(data => {
+                        obj['prevShot'] = data[0];
+                        res.send(obj);
+                    });
+                });
+            });
+        }
     }
 
     updateShot(req, res, next) {
@@ -115,19 +128,19 @@ class ShotService {
             })
     }
 
-    deleteShot(req, res, next){
+    deleteShot(req, res, next) {
         shotModel.findOne({_id: req.params.id})
             .then(
-                shot =>{
+                shot => {
                     const filePath = `${path.join(__dirname, '../public')}/${shot.shotUrl}`;
                     fs.unlinkSync(filePath);
                     console.log(`DELETE SHOT - ${shot.shotUrl}`);
                     shotModel.deleteOne({_id: req.params.id})
-                        .then( data => {
-                            commentModel.remove({shotId: req.params.id})
-                                .then(
-                                    smth => res.send(data)
-                                )
+                        .then(data => {
+                                commentModel.remove({shotId: req.params.id})
+                                    .then(
+                                        smth => res.send(data)
+                                    )
                             }
                         )
                 }

@@ -8,6 +8,10 @@ class CommentController {
     getAllComments(req, res, next){
         commentService.getAllComments(req, res, next);
     }
+
+    deleteComment(req, res, next){
+        commentService.deleteComment(req, res, next)
+    }
 }
 
 let commentController = new CommentController();
