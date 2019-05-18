@@ -3,7 +3,6 @@ const commentModel = require('../models/comment');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const mongoose = require("mongoose");
 
 
 const storage = multer.diskStorage({
@@ -34,48 +33,29 @@ class ShotService {
 
     getShot(req, res, next) {
         const obj = {};
-        let myId;
-        console.log(req.query);
-        if (req.query.userId==='false') {
-            myId = null
+        if(req.query.userId!=='false'&&req.query.userId!=='undefined'){
+            shotModel.findOne({_id: req.query.shotId, idUser: req.query.userId}).then(data => {
+                obj.currentShot = data;
+                shotModel.find({_id: {$gt: req.query.shotId}, idUser: req.query.userId}).sort({_id: 1}).limit(1).then(data => {
+                    obj['nextShot'] = data[0];
+                    shotModel.find({_id: {$lt: req.query.shotId},idUser: req.query.userId}).sort({_id: -1}).limit(1).then(data => {
+                        obj['prevShot'] = data[0];
+                        res.send(obj);
+                    });
+                });
+            });
         } else {
-            myId = mongoose.Types.ObjectId(req.query.userId)
+            shotModel.findOne({_id: req.query.shotId}).then(data => {
+                obj.currentShot = data;
+                shotModel.find({_id: {$gt: req.query.shotId}}).sort({_id: 1}).limit(1).then(data => {
+                    obj['nextShot'] = data[0];
+                    shotModel.find({_id: {$lt: req.query.shotId}}).sort({_id: -1}).limit(1).then(data => {
+                        obj['prevShot'] = data[0];
+                        res.send(obj);
+                    });
+                });
+            });
         }
-        shotModel.aggregate([
-            {
-                $match: {
-                    $or: [
-                        {idUser: myId},
-                        // {_id: mongoose.Types.ObjectId(req.query.shotId)}
-                        {}
-                    ]
-                }
-            }
-        ]).then(data => console.log(data));
-        
-        // if(req.query.userId!=='false'){
-        //     shotModel.findOne({_id: req.query.shotId, idUser: req.query.userId}).then(data => {
-        //         obj.currentShot = data;
-        //         shotModel.find({_id: {$gt: req.query.shotId}, idUser: req.query.userId}).sort({_id: 1}).limit(1).then(data => {
-        //             obj['nextShot'] = data[0];
-        //             shotModel.find({_id: {$lt: req.query.shotId},idUser: req.query.userId}).sort({_id: -1}).limit(1).then(data => {
-        //                 obj['prevShot'] = data[0];
-        //                 res.send(obj);
-        //             });
-        //         });
-        //     });
-        // } else {
-        //     shotModel.findOne({_id: req.query.shotId}).then(data => {
-        //         obj.currentShot = data;
-        //         shotModel.find({_id: {$gt: req.query.shotId}}).sort({_id: 1}).limit(1).then(data => {
-        //             obj['nextShot'] = data[0];
-        //             shotModel.find({_id: {$lt: req.query.shotId}}).sort({_id: -1}).limit(1).then(data => {
-        //                 obj['prevShot'] = data[0];
-        //                 res.send(obj);
-        //             });
-        //         });
-        //     });
-        // }
     }
 
     updateShot(req, res, next) {

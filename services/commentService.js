@@ -2,8 +2,8 @@ const commentModel = require('../models/comment');
 const mongoose = require("mongoose");
 
 class CommentService {
-    async createComment(req, res, next){
-        await commentModel.create(req.body).then(
+    createComment(req, res, next){
+        commentModel.create(req.body).then(
             data => {
                 commentModel.aggregate([
                     {
@@ -39,8 +39,8 @@ class CommentService {
 
     }
 
-    async getAllComments(req, res, next){
-        const comment = await commentModel.aggregate([
+    getAllComments(req, res, next){
+        commentModel.aggregate([
             {
                 $match: {
                     "shotId": {$eq : mongoose.Types.ObjectId(req.params.id)},
@@ -60,8 +60,14 @@ class CommentService {
                     'preserveNullAndEmptyArrays': true
                 }
             }
-        ]);
-        res.send(comment)
+        ])
+            .then(data => res.send(data))
+    }
+
+    deleteComment(req, res, next){
+        commentModel.deleteOne({_id: req.params.id}).then(
+            data => res.send(data)
+        )
     }
 }
 
