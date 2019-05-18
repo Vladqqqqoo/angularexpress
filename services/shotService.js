@@ -33,7 +33,8 @@ class ShotService {
 
     getShot(req, res, next) {
         const obj = {};
-        if(req.query.userId!=='false'&&req.query.userId!=='undefined'){
+        if(req.query.userId!=='false'&&req.query.userId!=='undefined'&&req.query.userId!==undefined){
+            console.log(1)
             shotModel.findOne({_id: req.query.shotId, idUser: req.query.userId}).then(data => {
                 obj.currentShot = data;
                 shotModel.find({_id: {$gt: req.query.shotId}, idUser: req.query.userId}).sort({_id: 1}).limit(1).then(data => {
