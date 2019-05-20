@@ -12,6 +12,10 @@ class CommentController {
     deleteComment(req, res, next){
         commentService.deleteComment(req, res, next)
     }
+
+    updateComment(req, res, next){
+        commentService.updateComment(req, res, next)
+    }
 }
 
 let commentController = new CommentController();

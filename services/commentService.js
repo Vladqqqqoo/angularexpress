@@ -69,6 +69,15 @@ class CommentService {
             data => res.send(data)
         )
     }
+
+    updateComment(req, res, next){
+        commentModel.updateOne({_id: req.params.id}, {commentMessage: req.body.message})
+            .then(
+                data=> {
+                    res.send(data)
+                }
+            );
+    }
 }
 
 let commentService = new CommentService();
