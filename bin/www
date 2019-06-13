@@ -18,6 +18,9 @@ app.set('port', port);
  * Create HTTP server.
  */
 const server = http.createServer(app);
+const socket = require('./socket');
+
+socket.createSocket(server);
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -26,7 +29,7 @@ const server = http.createServer(app);
 database()
     .then((info) => {
       console.log(`Connected to ${info.host}:${info.port}/${info.name}`);
-      server.listen(port, () => console.log('Example app listening on port 3000!'));
+      server.listen(port, () => console.log('Example app listening on port 4000!'));
     })
     .catch((error) => {
       console.log(`Eror! - ${error.name}`);
