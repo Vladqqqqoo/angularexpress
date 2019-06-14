@@ -10,7 +10,6 @@ passport.use(new LocalStrategy({
         session: false,
     },
     function (login, password, done) {
-        console.log('HELLO');
         return UserModel.findOne({login, password})
             .then(user => {
                 if (!user) {
